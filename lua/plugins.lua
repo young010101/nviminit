@@ -1,3 +1,5 @@
+-- This file can be loaded by calling `lua require('plugins')` from your init.vim
+
 vim.cmd([[
   augroup packer_user_config
     autocmd!
@@ -6,73 +8,96 @@ vim.cmd([[
 ]])
 
 local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+	packer_bootstrap =
+		fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
 end
 
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
-
 -- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+vim.cmd([[packadd packer.nvim]])
 
-return require('packer').startup(function(use)
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+return require("packer").startup(function(use)
+	-- Packer can manage itself
+	use("wbthomason/packer.nvim")
 
-  -- Simple plugins can be specified as strings
-  use '9mm/vim-closer'
+	use({
+		"kyazdani42/nvim-tree.lua",
+		requires = {
+			"kyazdani42/nvim-web-devicons", -- optional, for file icon
+		},
+		config = function()
+			require("nvim-tree").setup({})
+		end,
+	})
 
-  -- Lazy loading:
-  -- Load on specific commands
-  use {'tpope/vim-dispatch', opt = true, cmd = {'Dispatch', 'Make', 'Focus', 'Start'}}
+	use({
+		"nvim-telescope/telescope.nvim",
+		requires = { { "nvim-lua/plenary.nvim" }, { "sharkdp/fd" } },
+	})
 
-  -- Load on an autocommand event
-  use {'andymass/vim-matchup', event = 'VimEnter'}
+	-- Lazy loading:
+	-- Load on specific commands
+	use({ "tpope/vim-dispatch", opt = true, cmd = { "Dispatch", "Make", "Focus", "Start" } })
 
-  -- Load on a combination of conditions: specific filetypes or commands
-  -- Also run code after load (see the "config" key)
-  use {
-    'w0rp/ale',
-    ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex'},
-    cmd = 'ALEEnable',
-    config = 'vim.cmd[[ALEEnable]]'
-  }
+	-- Load on an autocommand event
+	use({ "andymass/vim-matchup", event = "VimEnter" })
 
-  -- Plugins can have dependencies on other plugins
-  use {
-    'haorenW1025/completion-nvim',
-    opt = true,
-    requires = {{'hrsh7th/vim-vsnip', opt = true}, {'hrsh7th/vim-vsnip-integ', opt = true}}
-  }
+	-- Load on a combination of conditions: specific filetypes or commands
+	-- Also run code after load (see the "config" key)
+	use({
+		"w0rp/ale",
+		ft = { "sh", "zsh", "bash", "c", "cpp", "cmake", "html", "markdown", "racket", "vim", "tex" },
+		cmd = "ALEEnable",
+		config = "vim.cmd[[ALEEnable]]",
+	})
 
-  -- You can specify rocks in isolation
-  use_rocks 'penlight'
-  use_rocks {'lua-resty-http', 'lpeg'}
+	-- Plugins can have dependencies on other plugins
+	use({
+		"haorenW1025/completion-nvim",
+		opt = true,
+		requires = { { "hrsh7th/vim-vsnip", opt = true }, { "hrsh7th/vim-vsnip-integ", opt = true } },
+	})
 
-  -- Plugins can have post-install/update hooks
-  use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
+	-- You can specify rocks in isolation
+	use_rocks("penlight")
+	use_rocks({ "lua-resty-http", "lpeg" })
 
-  -- Post-install/update hook with neovim command
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+	-- Plugins can have post-install/update hooks
+	use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", cmd = "MarkdownPreview" })
 
-  -- Post-install/update hook with call of vimscript function with argument
-  use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
+	-- Post-install/update hook with neovim command
+	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 
-  -- Use dependency and run lua function after load
-  use {
-    'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' },
-    config = function() require('gitsigns').setup() end
-  }
+	-- Post-install/update hook with call of vimscript function with argument
+	use({
+		"glacambre/firenvim",
+		run = function()
+			vim.fn["firenvim#install"](0)
+		end,
+	})
 
-  -- You can specify multiple plugins in a single call
-  use {'tjdevries/colorbuddy.vim', {'nvim-treesitter/nvim-treesitter', opt = true}}
+	-- Use dependency and run lua function after load
+	use({
+		"lewis6991/gitsigns.nvim",
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
 
-  -- You can alias plugin names
-  use {'dracula/vim', as = 'dracula'}
+	-- You can alias plugin names
+	use({ "dracula/vim", as = "dracula" })
 
-  if packer_bootstrap then
-    require('packer').sync()
-  end
+	-- YC:
+	use({ "neoclide/coc.nvim", branch = "release" })
+	use("lervag/vimtex")
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		requires = { { "nvim-lua/plenary.nvim" } },
+	})
+
+	if packer_bootstrap then
+		require("packer").sync()
+	end
 end)
-
