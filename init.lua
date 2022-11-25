@@ -1,15 +1,21 @@
+-- https://stackoverflow.com/questions/234564/tab-key-4-spaces-and-auto-indent-after-curly-braces-in-vim
+-- up vote: 2099, Nov 25
+
+vim.cmd([[
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
 set nu
 set relativenumber
-map <F2> GoDate: <Esc>:read !date<CR>kJ
 let mapleader = ","
-map <Leader>A  oanother line<Esc>
 
 lua << EOF
-require('plugins')
-require('vimtolua')
-require('user/telescopenov22')
-vim.keymap.set("n", "<Leader><Leader>", ":source $MYVIMRC<cr>")
+require('init')
 EOF
+
+map <F2> GoDate: <Esc>:read !date<CR>kJ
+map <Leader>A  oanother line<Esc>
 
 " settings of markdown plugin
 let g:mkdp_browser = 'firefox'
@@ -47,3 +53,9 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
+]])
+
+require("plugins")
+require("null-ls_nvim")
+require("user/telescopenov22")
+require("mason").setup()

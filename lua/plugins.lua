@@ -20,7 +20,6 @@ vim.cmd([[packadd packer.nvim]])
 return require("packer").startup(function(use)
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
-
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = {
@@ -30,11 +29,17 @@ return require("packer").startup(function(use)
 			require("nvim-tree").setup({})
 		end,
 	})
-
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" }, { "sharkdp/fd" } },
 	})
+	-- formatting, more info check the github.com
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		requires = { { "nvim-lua/plenary.nvim" } },
+	})
+	use({ "williamboman/mason.nvim" })
+	---------------up I get, blow I dont know---------
 
 	-- Lazy loading:
 	-- Load on specific commands
@@ -92,10 +97,6 @@ return require("packer").startup(function(use)
 	-- YC:
 	use({ "neoclide/coc.nvim", branch = "release" })
 	use("lervag/vimtex")
-	use({
-		"jose-elias-alvarez/null-ls.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
-	})
 
 	if packer_bootstrap then
 		require("packer").sync()
