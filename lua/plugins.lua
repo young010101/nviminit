@@ -1,4 +1,16 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
+local ensure_packer = function()
+	local fn = vim.fn
+	local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+	if fn.empty(fn.glob(install_path)) > 0 then
+		fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+		vim.cmd([[packadd packer.nvim]])
+		return true
+	end
+	return false
+end
+
+local packer_bootstrap = ensure_packer()
 
 vim.cmd([[
   augroup packer_user_config
@@ -7,19 +19,13 @@ vim.cmd([[
   augroup end
 ]])
 
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-	packer_bootstrap =
-		fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-end
-
 -- Only required if you have packer configured as `opt`
 vim.cmd([[packadd packer.nvim]])
 
 return require("packer").startup(function(use)
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
+
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = {
@@ -33,11 +39,6 @@ return require("packer").startup(function(use)
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" }, { "sharkdp/fd" } },
 	})
-	-- formatting, more info check the github.com
-	use({
-		"jose-elias-alvarez/null-ls.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
-	})
 	use("mfussenegger/nvim-dap")
 	use({ "williamboman/mason.nvim" })
 	use({
@@ -49,8 +50,43 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
+
+	-- editting, general
 	-- git diff
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
+	use({
+		"numToStr/Comment.nvim",
+		config = function()
+			require("Comment").setup()
+		end,
+	})
+	-- formatting, more info check the github.com
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		requires = { { "nvim-lua/plenary.nvim" } },
+	})
+
+	-- Plugins can have post-install/update hooks
+	--use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", cmd = "MarkdownPreview" })
+	use({
+		"iamcco/markdown-preview.nvim",
+		run = "cd app && npm install",
+		setup = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+	})
+	-- Nvim appearance. Themes
+	use("EdenEast/nightfox.nvim")
+	use("lukas-reineke/indent-blankline.nvim")
+	use({
+		"nvim-lualine/lualine.nvim",
+		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+	})
+	use({ "romgrk/barbar.nvim", wants = "nvim-web-devicons" })
+
+	-- Plugin recommand, click blow link.
+	-- https://hannadrehman.com/top-neovim-plugins-for-developers-in-2022
 	---------------up I get, blow I dont know---------
 
 	-- Lazy loading:
@@ -80,9 +116,6 @@ return require("packer").startup(function(use)
 	use_rocks("penlight")
 	use_rocks({ "lua-resty-http", "lpeg" })
 
-	-- Plugins can have post-install/update hooks
-	use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", cmd = "MarkdownPreview" })
-
 	-- Post-install/update hook with neovim command
 	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 
@@ -107,7 +140,7 @@ return require("packer").startup(function(use)
 	use({ "dracula/vim", as = "dracula" })
 
 	-- YC:
-	use({ "neoclide/coc.nvim", branch = "release" })
+	use({ "neoclide/coc.nvim", branch = "release", opt = true })
 	use("lervag/vimtex")
 
 	if packer_bootstrap then

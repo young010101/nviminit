@@ -18,7 +18,7 @@ map <F2> GoDate: <Esc>:read !date<CR>kJ
 map <Leader>A  oanother line<Esc>
 
 " settings of markdown plugin
-let g:mkdp_browser = 'firefox'
+"let g:mkdp_browser = 'firefox'
 nmap <C-p> <Plug>MarkdownPreviewToggle
 
 " use <tab> for trigger completion and navigate to the next complete item
@@ -53,11 +53,32 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
+
+
+" float window try, nothing new, to delete
+function! Stmpfw() abort
+    let buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(buf, 0, -1, v:true, ["test", "text"])
+    let opts = {'relative': 'cursor', 'width': 10, 'height': 2, 'col': 0,
+        \ 'row': 1, 'anchor': 'NW', 'style': 'minimal'}
+    let win = nvim_open_win(buf, 0, opts)
+    " optional: change highlight, otherwise Pmenu is used
+    call nvim_win_set_option(win, 'winhl', 'Normal:MyHighlight')
+endfunction
 ]])
 
+vim.g.mkdp_browser = "microsoft-edge-dev"
 require("plugins")
 require("null-ls_nvim")
 require("user/telescopenov22")
 require("mason").setup()
 require("auto-save_nvim")
+require("Comment").setup()
+require("lualine").setup()
+require("indent_blankline").setup({
+	-- for example, context is off by default, use this to turn it on
+	show_current_context = true,
+	show_current_context_start = true,
+})
+vim.cmd("colorscheme nightfox")
 vim.keymap.set("n", "<Leader><Leader>", ":source $MYVIMRC<cr>")
