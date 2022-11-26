@@ -25,7 +25,6 @@ vim.cmd([[packadd packer.nvim]])
 return require("packer").startup(function(use)
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
-
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = {
@@ -41,17 +40,20 @@ return require("packer").startup(function(use)
 	})
 	use("mfussenegger/nvim-dap")
 	use({ "williamboman/mason.nvim" })
-	use({
-		"Pocco81/auto-save.nvim",
-		config = function()
-			require("auto-save").setup({
-				-- your config goes here
-				-- or just leave it empty :)
-			})
-		end,
-	})
 
 	-- editting, general
+	use({ "neoclide/coc.nvim", branch = "release" })
+	use("neovim/nvim-lspconfig") -- Configurations for Nvim LSP
+	-- --auto complete
+	-- use("hrsh7th/cmp-nvim-lsp")
+	-- use("hrsh7th/cmp-buffer")
+	-- use("hrsh7th/cmp-path")
+	-- use("hrsh7th/cmp-cmdline")
+	-- use("hrsh7th/nvim-cmp")
+	-- --
+	-- use("hrsh7th/cmp-vsnip")
+	-- use("hrsh7th/vim-vsnip")
+	-- vim.opt.completeopt = { "menu", "menuone", "noselect" }
 	-- git diff
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
 	use({
@@ -65,6 +67,23 @@ return require("packer").startup(function(use)
 		"jose-elias-alvarez/null-ls.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
+	use({
+		"Pocco81/auto-save.nvim",
+		config = function()
+			require("auto-save").setup({
+				-- your config goes here
+				-- or just leave it empty :)
+			})
+		end,
+	})
+	use({
+		"phaazon/hop.nvim",
+		branch = "v2", -- optional but strongly recommended
+		config = function()
+			-- you can configure Hop the way you like here; see :h hop-config
+			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+		end,
+	})
 
 	-- Plugins can have post-install/update hooks
 	--use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install", cmd = "MarkdownPreview" })
@@ -76,6 +95,7 @@ return require("packer").startup(function(use)
 		end,
 		ft = { "markdown" },
 	})
+
 	-- Nvim appearance. Themes
 	use("EdenEast/nightfox.nvim")
 	use("lukas-reineke/indent-blankline.nvim")
@@ -140,7 +160,6 @@ return require("packer").startup(function(use)
 	use({ "dracula/vim", as = "dracula" })
 
 	-- YC:
-	use({ "neoclide/coc.nvim", branch = "release", opt = true })
 	use("lervag/vimtex")
 
 	if packer_bootstrap then

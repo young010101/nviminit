@@ -22,18 +22,7 @@ map <Leader>A  oanother line<Esc>
 nmap <C-p> <Plug>MarkdownPreviewToggle
 
 " use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
-
-
-nnoremap <C-n> :NvimTreeToggle<CR>
 
 
 " Use <C-l> for trigger snippet expand.
@@ -71,6 +60,10 @@ vim.g.mkdp_browser = "microsoft-edge-dev"
 require("plugins")
 require("null-ls_nvim")
 require("user/telescopenov22")
+require("user/lsp-config")
+-- require("user/nvim-cmp")
+require("user/coc-init")
+require("user/nvimtree")
 require("mason").setup()
 require("auto-save_nvim")
 require("Comment").setup()
