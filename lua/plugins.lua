@@ -38,7 +38,19 @@ return require("packer").startup(function(use)
 		"jose-elias-alvarez/null-ls.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
+	use("mfussenegger/nvim-dap")
 	use({ "williamboman/mason.nvim" })
+	use({
+		"Pocco81/auto-save.nvim",
+		config = function()
+			require("auto-save").setup({
+				-- your config goes here
+				-- or just leave it empty :)
+			})
+		end,
+	})
+	-- git diff
+	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
 	---------------up I get, blow I dont know---------
 
 	-- Lazy loading:
